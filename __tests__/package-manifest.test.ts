@@ -27,6 +27,14 @@ describe("package.json files", () => {
     expect(skill).toMatch(/^disable-model-invocation:\s*true\s*$/m);
   });
 
+  it("ships the OAuth guide linked by the published README", () => {
+    const readme = readFileSync(join(repoRoot, "README.md"), "utf-8");
+    const guide = readme.match(/\[OAuth\]\(([^)#]+)#token-storage\)/)?.[1];
+
+    expect(guide).toBe("OAUTH.md");
+    expect(packageJson.files).toContain(guide);
+  });
+
   it("exports source entry points and plain Node host helpers", () => {
     expect(packageJson.types).toBe("./index.ts");
     expect(packageJson.exports).toMatchObject({
